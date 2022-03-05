@@ -53,6 +53,6 @@ public class ColorBean {
     }
 
     public final static String APPLICATION_NAME = "ColorBean";
-    public final static String APPLICATION_VERSION = "1.0";
+    public final static String APPLICATION_VERSION = "1.0.1";
 
 }

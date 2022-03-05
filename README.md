@@ -27,19 +27,24 @@ IDE: `IntelliJ IDEA` Runtime: Java 1.8+
 
 Open source license: BSD 3
 
-## 启动 / Run
+## 开发环境启动 / Dev Environment Run
 
 在 **Java 9 及以上版本**，启动程序时需要向 Java(JVM) 添加启动参数
 
-In **Java 9 and above**, you need to add startup parameters to Java (JVM) when starting the program
+In **Java 9 and above**, you need to add startup arguments to Java (JVM) when starting the program
 
 `--add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED`
 
 e.g.
 
 ```sh
-java --add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED -jar ColorBean.jar
+# in shell after compiled
+java --add-opens java.desktop/javax.swing.plaf.basic=ALL-UNNAMED -classpath ColorBean:ColorPadCore:FitToolkit main.ColorBean
 ```
+
+启动编译好的 jar 文件后则不需要加参数
+
+No arguments are needed for a compiled jar file startup
 
 ## 项目结构 / Project Structure
 

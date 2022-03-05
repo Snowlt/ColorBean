@@ -104,10 +104,9 @@ public class MainForm extends JFrame {
             String message = null;
             try {
                 this.setVisible(false);
-                PickColorForm.createScreenCapture().setOnChangeColor(br -> {
-                    updateAll(br);
-                    this.setVisible(true);
-                });
+                PickColorForm pickColorForm = PickColorForm.createScreenCapture();
+                pickColorForm.setOnChangeColor(this::updateAll);
+                pickColorForm.setOnDispose(() -> this.setVisible(true));
             } catch (UnsupportedOperationException ex) {
                 message = ex.getMessage();
             } catch (Exception ex) {

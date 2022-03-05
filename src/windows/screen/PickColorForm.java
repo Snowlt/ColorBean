@@ -32,6 +32,7 @@ public class PickColorForm extends JFrame implements MouseInputListener {
     //图片对象  用于画背景
     private final Image backgroundImage;
     private ChangeColor onChangeColor;
+    private Runnable onDispose;
 
     /**
      * static方法
@@ -70,6 +71,15 @@ public class PickColorForm extends JFrame implements MouseInputListener {
      */
     public void setOnChangeColor(ChangeColor onChangeColor) {
         this.onChangeColor = onChangeColor;
+    }
+
+    /**
+     * 设置窗口关闭时的回调
+     *
+     * @param onDispose 函数
+     */
+    public void setOnDispose(Runnable onDispose) {
+        this.onDispose = onDispose;
     }
 
     /**
@@ -183,6 +193,17 @@ public class PickColorForm extends JFrame implements MouseInputListener {
             panY -= panInfo.getHeight() + 2 * offset;
         }
         panInfo.setLocation(panX, panY);
+    }
+
+    @Override
+    public void dispose() {
+        try {
+            super.dispose();
+        } finally {
+            if (onDispose != null) {
+                onDispose.run();
+            }
+        }
     }
 
     /**
