@@ -9,7 +9,7 @@ import java.util.Objects;
  * Class of HSL Color Model
  * 表示 HSL 颜色模型的类
  */
-public class Hsl implements IToString {
+public class Hsl implements IColorModel {
 
     private double h, s, l;
 

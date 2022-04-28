@@ -9,7 +9,7 @@ import java.util.Objects;
  * Class to store the values of X, Y, Z in CIE-XYZ Color Space
  * 用来存储 CIE-XYZ 颜色空间 X, Y, Z 值的类
  */
-public class Xyz implements IToString {
+public class Xyz implements IColorModel {
 
     private double x, y, z;
 

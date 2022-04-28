@@ -8,7 +8,7 @@ import java.text.MessageFormat;
  * Class of RGB Color Model
  * 表示 RGB 颜色模型的类
  */
-public class Rgb implements IToString {
+public class Rgb implements IColorModel {
 
     private int r, g, b;
 

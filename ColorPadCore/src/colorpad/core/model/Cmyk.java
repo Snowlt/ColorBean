@@ -9,7 +9,7 @@ import java.text.MessageFormat;
  * Class of CMYK Color Model
  * 表示 CMYK 颜色模型的类
  */
-public class Cmyk implements IToString {
+public class Cmyk implements IColorModel {
 
     private int c, m, y, k;
 

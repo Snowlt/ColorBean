@@ -8,7 +8,7 @@ import java.text.MessageFormat;
  * Class of CIE-Lab Color Model
  * 表示 CIE-Lab 颜色模型的类
  */
-public class Lab implements IToString {
+public class Lab implements IColorModel {
 
     private double l, a, b;
 

@@ -27,7 +27,7 @@ public class CieXyzD65 extends Xyz {
      * @param color String of XYZ / XYZ 字符串
      * @return CIE-XYZ D65 Object / CIE-XYZ D65 对象
      */
-    public static Xyz fromString(String color) {
+    public static CieXyzD65 fromString(String color) {
         double[] xyz = Basic.extractFromString(color);
         if (xyz.length != 3)
             return null;
@@ -42,7 +42,7 @@ public class CieXyzD65 extends Xyz {
             return null;
         }
         // 返回对象
-        return new Xyz(x, y, z);
+        return new CieXyzD65(x, y, z);
     }
 
     @Override

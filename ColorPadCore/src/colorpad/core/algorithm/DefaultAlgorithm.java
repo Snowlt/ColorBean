@@ -1,6 +1,7 @@
 package colorpad.core.algorithm;
 
 import colorpad.core.Basic;
+import colorpad.core.algorithm.interfaces.IConvertFromTo;
 import colorpad.core.model.*;
 
 import static colorpad.core.ConversionManager.register;
@@ -10,34 +11,30 @@ import static colorpad.core.ConversionManager.register;
  */
 public final class DefaultAlgorithm {
 
-    private static final DefaultAlgorithm DA = new DefaultAlgorithm();
-
-    public static DefaultAlgorithm getDefaultAlgorithm() {
-        return DA;
+    private DefaultAlgorithm() {
     }
 
     public static void registerDefaultAlgorithm() {
         // Register default converter
-        register(Rgb.class, Hsb.class, DA::RGBToHSB);
-        register(Hsb.class, Rgb.class, DA::HSBToRGB);
-        register(Rgb.class, Hsl.class, DA::RGBToHSL);
-        register(Hsl.class, Rgb.class, DA::HSLToRGB);
-        register(Rgb.class, Cmyk.class, DA::RGBToCMYK);
-        register(Cmyk.class, Rgb.class, DA::CMYKToRGB);
-        register(Rgb.class, YCrCb.class, DA::RGBToYCrCb);
-        register(YCrCb.class, Rgb.class, DA::YCrCbToRGB);
-        register(Rgb.class, Xyz.class, DA::RGBToXYZ);
-        register(Xyz.class, Rgb.class, DA::XYZToRGB);
+        register(Rgb.class, Hsb.class, RGB_TO_HSB);
+        register(Hsb.class, Rgb.class, HSB_TO_RGB);
+        register(Rgb.class, Hsl.class, RGB_TO_HSL);
+        register(Hsl.class, Rgb.class, HSL_TO_RGB);
+        register(Rgb.class, Cmyk.class, RGB_TO_CMYK);
+        register(Cmyk.class, Rgb.class, CMYK_TO_RGB);
+        register(Rgb.class, YCrCb.class, RGB_TO_Y_CR_CB);
+        register(YCrCb.class, Rgb.class, Y_CR_CB_TO_RGB);
+        register(Rgb.class, Xyz.class, RGB_TO_XYZ);
+        register(Xyz.class, Rgb.class, XYZ_TO_RGB);
         // HSB and HSL
-        register(Hsb.class, Hsl.class, DA::HSBToHSL);
-        register(Hsl.class, Hsb.class, DA::HSLToHSB);
+        register(Hsb.class, Hsl.class, HSB_TO_HSL);
+        register(Hsl.class, Hsb.class, HSL_TO_HSB);
         // XYZ and Lab
-        register(Xyz.class, Lab.class, DA::XYZToLab);
-        register(Lab.class, Xyz.class, DA::LabToXYZ);
+        register(Xyz.class, Lab.class, XYZ_TO_LAB);
+        register(Lab.class, Xyz.class, LAB_TO_XYZ);
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    public Hsb RGBToHSB(Rgb rgb) {
+    public static final IConvertFromTo<Rgb, Hsb> RGB_TO_HSB = (Rgb rgb) -> {
         int max, min;
         double h, s, v;
         max = Math.max(Math.max(rgb.r(), rgb.g()), rgb.b());
@@ -53,21 +50,20 @@ public final class DefaultAlgorithm {
             } else if (max == rgb.g()) {
                 h = 120d + (double) (60 * (rgb.b() - rgb.r())) / (max - min);
             } else {
-                // if (max == rgb.b())
+                // same as: if (max == rgb.b())
                 h = 240d + (double) (60 * (rgb.r() - rgb.g())) / (max - min);
             }
         }
         return new Hsb(h, s * 100d, v * 100d);
-    }
+    };
 
-    public Rgb HSBToRGB(Hsb hsb) {
+    public static final IConvertFromTo<Hsb, Rgb> HSB_TO_RGB = (Hsb hsb) -> {
         double r, g, b, h, s, v;
         h = hsb.h() % 360d;
         s = hsb.s() / 100d;
         v = hsb.b() / 100d;
-        int i;
         double f, p, q, t;
-        i = ((int) h / 60) % 6;
+        int i = ((int) h / 60) % 6;
         f = h / 60d - i;
         p = v * (1d - s);
         q = v * (1d - f * s);
@@ -79,35 +75,30 @@ public final class DefaultAlgorithm {
                 b = p;
                 break;
             }
-
             case 1: {
                 r = q;
                 g = v;
                 b = p;
                 break;
             }
-
             case 2: {
                 r = p;
                 g = v;
                 b = t;
                 break;
             }
-
             case 3: {
                 r = p;
                 g = q;
                 b = v;
                 break;
             }
-
             case 4: {
                 r = t;
                 g = p;
                 b = v;
                 break;
             }
-
             default: {
                 // case 5
                 r = v;
@@ -117,11 +108,10 @@ public final class DefaultAlgorithm {
             }
         }
         return new Rgb((int) Math.round(r * 255), (int) Math.round(g * 255), (int) Math.round(b * 255));
-    }
+    };
 
     // HSL - RGB
-    @SuppressWarnings("DuplicatedCode")
-    public Hsl RGBToHSL(Rgb rgb) {
+    public static final IConvertFromTo<Rgb, Hsl> RGB_TO_HSL = (Rgb rgb) -> {
         int max, min;
         double h, s, l;
         max = Math.max(Math.max(rgb.r(), rgb.g()), rgb.b());
@@ -143,14 +133,14 @@ public final class DefaultAlgorithm {
             } else if (max == rgb.g()) {
                 h = 120d + (double) (60 * (rgb.b() - rgb.r())) / (max - min);
             } else {
-                //if (max == rgb.b())
+                // same as: if (max == rgb.b())
                 h = 240d + (double) (60 * (rgb.r() - rgb.g())) / (max - min);
             }
         }
         return new Hsl(h, s * 100d, l * 100d);
-    }
+    };
 
-    public Rgb HSLToRGB(Hsl hsl) {
+    public static final IConvertFromTo<Hsl, Rgb> HSL_TO_RGB = (Hsl hsl) -> {
         double hue = hsl.h();
         double saturation = hsl.s();
         double lightness = hsl.l();
@@ -192,10 +182,10 @@ public final class DefaultAlgorithm {
         }
 
         return new Rgb(cRgb[0], cRgb[1], cRgb[2]);
-    }
+    };
 
     // HSB/HSV - HSL
-    public Hsl HSBToHSL(Hsb hsb) {
+    public static final IConvertFromTo<Hsb, Hsl> HSB_TO_HSL = (Hsb hsb) -> {
         double s, l;
         l = hsb.b() * (200d - hsb.s()) / 200d;
         if (Basic.decimalEquals(l, 0d) || Basic.decimalEquals(l, 100d)) {
@@ -204,17 +194,17 @@ public final class DefaultAlgorithm {
             s = (hsb.b() - l) / Math.min(l, 100d - l) * 100d;
         }
         return new Hsl(hsb.h(), s, l);
-    }
+    };
 
-    public Hsb HSLToHSB(Hsl hsl) {
+    public static final IConvertFromTo<Hsl, Hsb> HSL_TO_HSB = (Hsl hsl) -> {
         double s, b;
         b = hsl.l() + hsl.s() * Math.min(hsl.l(), 100d - hsl.l()) / 100d;
         s = Basic.decimalEquals(b, 0d) ? 0d : 200d - 200d * hsl.l() / b;
         return new Hsb(hsl.h(), s, b);
-    }
+    };
 
     // CMYK - RGB
-    public Cmyk RGBToCMYK(Rgb rgb) {
+    public static final IConvertFromTo<Rgb, Cmyk> RGB_TO_CMYK = (Rgb rgb) -> {
         int c, m, y, k;
         // RGB转CMYK
         c = 255 - rgb.r();
@@ -234,37 +224,37 @@ public final class DefaultAlgorithm {
             k = Basic.fRound(k / 255d * 100d);
         }
         return new Cmyk(c, m, y, k);
-    }
+    };
 
-    public Rgb CMYKToRGB(Cmyk cmyk) {
+    public static final IConvertFromTo<Cmyk, Rgb> CMYK_TO_RGB = (Cmyk cmyk) -> {
         int r, g, b;
         r = (int) Math.round((double) (225 * (100 - cmyk.c()) * (100 - cmyk.k())) / 10000d);
         g = (int) Math.round((double) (225 * (100 - cmyk.m()) * (100 - cmyk.k())) / 10000d);
         b = (int) Math.round((double) (225 * (100 - cmyk.y()) * (100 - cmyk.k())) / 10000d);
         return new Rgb(r, g, b);
-    }
+    };
 
     // YCrCb - RGB
-    public YCrCb RGBToYCrCb(Rgb rgb) {
+    public static final IConvertFromTo<Rgb, YCrCb> RGB_TO_Y_CR_CB = (Rgb rgb) -> {
         final int delta = 128;
         double y, cr, cb;
         y = (rgb.r() * 299 + rgb.g() * 587 + rgb.b() * 114) / 1000d;
         cr = (500000 * rgb.r() - 418688 * rgb.g() - 81312 * rgb.b()) / 1000000d + delta;
         cb = (-168736 * rgb.r() - 331264 * rgb.g() + 500000 * rgb.b()) / 1000000d + delta;
         return new YCrCb(Basic.fRound(y), Basic.fRound(cr), Basic.fRound(cb));
-    }
+    };
 
-    public Rgb YCrCbToRGB(YCrCb yCrCb) {
+    public static final IConvertFromTo<YCrCb, Rgb> Y_CR_CB_TO_RGB = (YCrCb yCrCb) -> {
         final int delta = 128;
         double r, g, b;
         r = yCrCb.y() + 1.402d * (yCrCb.cr() - delta);
         g = yCrCb.y() - 0.344136d * (yCrCb.cb() - delta) - 0.714136d * (yCrCb.cr() - delta);
         b = yCrCb.y() + 1.772d * (yCrCb.cb() - delta);
         return new Rgb(Basic.fRound(r), Basic.fRound(g), Basic.fRound(b));
-    }
+    };
 
     // XYZ - RGB
-    public Xyz RGBToXYZ(Rgb rgb) {
+    public static final IConvertFromTo<Rgb, Xyz> RGB_TO_XYZ = (Rgb rgb) -> {
         // Observer = 2°, Illuminant = D65
         double x, y, z, cR, cG, cB;
         // Gamma calculation for RGB
@@ -290,9 +280,9 @@ public final class DefaultAlgorithm {
         y = cR * 0.2126d + cG * 0.7152d + cB * 0.0722d;
         z = cR * 0.0193d + cG * 0.1192d + cB * 0.9505d;
         return new Xyz(x, y, z);
-    }
+    };
 
-    public Rgb XYZToRGB(Xyz xyz) {
+    public static final IConvertFromTo<Xyz, Rgb> XYZ_TO_RGB = (Xyz xyz) -> {
         // Observer = 2°, Illuminant = D65
         double cR, cG, cB;
         cR = xyz.x() * 3.2406d - xyz.y() * 1.5372d - xyz.z() * 0.4986d;
@@ -315,10 +305,10 @@ public final class DefaultAlgorithm {
             cB *= 12.92d;
         }
         return new Rgb(Basic.fRound(cR * 255), Basic.fRound(cG * 255), Basic.fRound(cB * 255));
-    }
+    };
 
     // CIE-Lab - XYZ
-    public Lab XYZToLab(Xyz xyz) {
+    public static final IConvertFromTo<Xyz, Lab> XYZ_TO_LAB = (Xyz xyz) -> {
         double x = xyz.x();
         double y = xyz.y();
         double z = xyz.z();
@@ -349,9 +339,9 @@ public final class DefaultAlgorithm {
         cA = 500d * (fX - fY);
         cB = 200d * (fY - fZ);
         return new Lab(cL, cA, cB);
-    }
+    };
 
-    public Xyz LabToXYZ(Lab lab) {
+    public static final IConvertFromTo<Lab, Xyz> LAB_TO_XYZ = (Lab lab) -> {
         double l = lab.l();
         double a = lab.a();
         double b = lab.b();
@@ -391,6 +381,6 @@ public final class DefaultAlgorithm {
         x *= 0.950456d;
         z *= 1.088754d;
         return new Xyz(x, y, z);
-    }
+    };
 
 }

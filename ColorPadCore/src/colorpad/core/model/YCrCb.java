@@ -8,7 +8,7 @@ import java.text.MessageFormat;
  * Class of YCrCb Color Model
  * 表示 YCrCb 颜色模型的类
  */
-public class YCrCb implements IToString {
+public class YCrCb implements IColorModel {
 
     private int y, cr, cb;
 

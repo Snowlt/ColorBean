@@ -9,7 +9,7 @@ import java.util.Objects;
  * Class of HSB / HSV Color Model
  * 表示 HSB / HSV 颜色模型的类
  */
-public class Hsb implements IToString {
+public class Hsb implements IColorModel {
 
     private double h, s, b;
 

@@ -74,7 +74,7 @@ public final class ConversionManager {
      *
      * @param <TSource>   Source type
      * @param <TTarget>   Target type
-     * @param source      Source model
+     * @param source      Source model (including subclass of source type)
      * @param targetClass Class of target model
      * @return Target model
      * @throws IllegalArgumentException No converter found for TSource and TTarget
@@ -96,7 +96,15 @@ public final class ConversionManager {
         // Find converter for type TSource to TTarget
         Map<Class<?>, IConvertFromTo<?, ?>> targetMap = REGISTERED_CONVERTERS.get(source);
         if (targetMap == null) {
-            return null;
+            for (Map.Entry<Class<?>, Map<Class<?>, IConvertFromTo<?, ?>>> entry : REGISTERED_CONVERTERS.entrySet()) {
+                if (entry.getKey().isAssignableFrom(source)) {
+                    targetMap = entry.getValue();
+                    break;
+                }
+            }
+            if (targetMap == null) {
+                return null;
+            }
         }
         return (IConvertFromTo<TSource, TTarget>) targetMap.get(targetClass);
     }
