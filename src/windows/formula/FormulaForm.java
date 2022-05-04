@@ -1,6 +1,6 @@
 package windows.formula;
 
-import colorpad.core.ConversionManager;
+import colorpad.core.ModelsManager;
 import colorpad.core.formula.ColorFormula;
 import colorpad.core.formula.FormulaType;
 import colorpad.core.model.Hsb;
@@ -218,7 +218,7 @@ public class FormulaForm extends JFrame {
         }
 
         private void updateLabel() {
-            Rgb rgb = ConversionManager.convert(hsb, Rgb.class);
+            Rgb rgb = ModelsManager.convert(hsb, Rgb.class);
             hex = rgb.toHex();
             labHex.setText(Option.HexShowSym() ? "#" + hex : hex);
             labHsb.setText(MessageFormat.format("HSB({1}{0}{2}{0}{3})", ",",

@@ -1,30 +1,30 @@
 package colorpad.core;
 
-import colorpad.core.algorithm.DefaultAlgorithm;
-import colorpad.core.algorithm.GrayComponentAlgorithm;
-import colorpad.core.algorithm.interfaces.IConvertFromTo;
-import colorpad.core.algorithm.interfaces.IGetGray;
+import colorpad.core.algorithm.grayscale.GrayComponentAlgorithm;
+import colorpad.core.algorithm.grayscale.IGrayscaleAlgorithm;
+import colorpad.core.converter.DefaultModelConverters;
+import colorpad.core.converter.IConvertFromTo;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Entry of process color models conversion
+ * Entry of process color models conversion and calculation
  *
  * @author Snow
  */
-public final class ConversionManager {
+public final class ModelsManager {
 
     private static final Map<Class<?>, Map<Class<?>, IConvertFromTo<?, ?>>> REGISTERED_CONVERTERS = new HashMap<>();
 
-    private static IGetGray grayscaleAlgorithm = new GrayComponentAlgorithm();
+    private static IGrayscaleAlgorithm grayscaleAlgorithm = new GrayComponentAlgorithm();
 
     /**
      * Get current grayscale algorithm
      *
      * @return Grayscale algorithm
      */
-    public static IGetGray getGrayscaleAlgorithm() {
+    public static IGrayscaleAlgorithm getGrayscaleAlgorithm() {
         return grayscaleAlgorithm;
     }
 
@@ -33,7 +33,7 @@ public final class ConversionManager {
      *
      * @param algorithm Grayscale algorithm
      */
-    public static void registerGrayscaleAlgorithm(IGetGray algorithm) {
+    public static void registerGrayscaleAlgorithm(IGrayscaleAlgorithm algorithm) {
         grayscaleAlgorithm = algorithm;
     }
 
@@ -84,6 +84,35 @@ public final class ConversionManager {
             throw new NullPointerException("All arguments cannot be null");
         Class<?> sourceClass = source.getClass();
         IConvertFromTo<TSource, TTarget> converter = getConverter(sourceClass, targetClass);
+        while (converter == null && !Object.class.equals(sourceClass)) {
+            sourceClass = sourceClass.getSuperclass();
+            converter = getConverter(sourceClass, targetClass);
+        }
+        if (converter == null)
+            throw new IllegalArgumentException("Cannot find converter for type " + source.getClass().getName()
+                    + "(or superclass) and " + targetClass.getName() + ". Consider use register() to add a converter first?");
+        return converter.convert(source);
+    }
+
+    /**
+     * Using specified converter for <i>source type</i> and <i>target type</i> to convert model.
+     * This method cannot find converter if <i>source</i> is subclass of <i>source type</i>,
+     * which is different to {@link #convert(Object, Class)}.
+     *
+     * @param <TSource>      Source type
+     * @param <TTarget>      Target type
+     * @param <TSourceModel> Source type of actual model (might be subclass of TSource)
+     * @param source         Source model
+     * @param sourceClass    Class of source model (to find converter)
+     * @param targetClass    Class of target model
+     * @return Target model
+     * @throws IllegalArgumentException No converter found for TSource and TTarget
+     */
+    public static <TSource, TTarget, TSourceModel extends TSource> TTarget convert(
+            TSourceModel source, Class<TSource> sourceClass, Class<TTarget> targetClass) {
+        if (source == null || sourceClass == null || targetClass == null)
+            throw new NullPointerException("All arguments cannot be null");
+        IConvertFromTo<TSource, TTarget> converter = getConverter(sourceClass, targetClass);
         if (converter == null)
             throw new IllegalArgumentException("Cannot find converter for type " + sourceClass.getName()
                     + " and " + targetClass.getName() + ". Consider use register() to add a converter first?");
@@ -91,25 +120,17 @@ public final class ConversionManager {
     }
 
     @SuppressWarnings("unchecked")
-    private static <TSource, TTarget> IConvertFromTo<TSource, TTarget> getConverter(Class<?> source,
-                                                                                    Class<TTarget> targetClass) {
+    private static <TSource, TTarget> IConvertFromTo<TSource, TTarget> getConverter(
+            Class<?> source, Class<TTarget> targetClass) {
         // Find converter for type TSource to TTarget
         Map<Class<?>, IConvertFromTo<?, ?>> targetMap = REGISTERED_CONVERTERS.get(source);
         if (targetMap == null) {
-            for (Map.Entry<Class<?>, Map<Class<?>, IConvertFromTo<?, ?>>> entry : REGISTERED_CONVERTERS.entrySet()) {
-                if (entry.getKey().isAssignableFrom(source)) {
-                    targetMap = entry.getValue();
-                    break;
-                }
-            }
-            if (targetMap == null) {
-                return null;
-            }
+            return null;
         }
         return (IConvertFromTo<TSource, TTarget>) targetMap.get(targetClass);
     }
 
     static {
-        DefaultAlgorithm.registerDefaultAlgorithm();
+        DefaultModelConverters.registerToManager();
     }
 }

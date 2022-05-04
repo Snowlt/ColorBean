@@ -1,6 +1,6 @@
 package windows.component;
 
-import colorpad.core.ConvertBridge;
+import colorpad.extend.ConvertBridge;
 
 import javax.swing.*;
 import java.util.function.Consumer;

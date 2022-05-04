@@ -1,14 +1,14 @@
 package windows;
 
-import colorpad.core.ConversionManager;
-import colorpad.core.ConvertBridge;
-import colorpad.core.NormalConvertBridge;
-import colorpad.core.algorithm.GrayAverageAlgorithm;
-import colorpad.core.algorithm.GrayComponentAlgorithm;
+import colorpad.core.ModelsManager;
+import colorpad.core.algorithm.grayscale.GrayAverageAlgorithm;
+import colorpad.core.algorithm.grayscale.GrayComponentAlgorithm;
 import colorpad.core.model.Cmyk;
 import colorpad.core.model.Hsb;
 import colorpad.core.model.Lab;
 import colorpad.core.model.Rgb;
+import colorpad.extend.ConvertBridge;
+import colorpad.extend.NormalConvertBridge;
 import fit.simplification.Check;
 import main.ColorBean;
 import option.Option;
@@ -309,13 +309,13 @@ public class MainForm extends JFrame {
         grayRgb.addActionListener(e -> {
             //灰度值算法 分量
             Option.GrayCal(Option.GrayscaleMethod.SPACE_COMPONENT);
-            ConversionManager.registerGrayscaleAlgorithm(new GrayComponentAlgorithm());
+            ModelsManager.registerGrayscaleAlgorithm(new GrayComponentAlgorithm());
             updateInfo(bridge);
         });
         grayAverage.addActionListener(e -> {
             //灰度值算法 平均值
             Option.GrayCal(Option.GrayscaleMethod.AVERAGE);
-            ConversionManager.registerGrayscaleAlgorithm(new GrayAverageAlgorithm());
+            ModelsManager.registerGrayscaleAlgorithm(new GrayAverageAlgorithm());
             updateInfo(bridge);
         });
         itemRestoreColor.addActionListener(e -> Option.Restore(!Option.Restore()));

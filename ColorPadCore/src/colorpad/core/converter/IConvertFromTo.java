@@ -1,4 +1,4 @@
-package colorpad.core.algorithm.interfaces;
+package colorpad.core.converter;
 
 /**
  * Standard convert method

@@ -1,10 +1,10 @@
-package colorpad.core;
+package colorpad.extend;
 
 import colorpad.core.model.*;
 
 import java.util.Objects;
 
-import static colorpad.core.ConversionManager.convert;
+import static colorpad.core.ModelsManager.convert;
 
 /**
  * 颜色模型转换桥接工具

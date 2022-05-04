@@ -1,11 +1,11 @@
-package colorpad.core.algorithm.interfaces;
+package colorpad.core.algorithm.grayscale;
 
 import colorpad.core.model.Rgb;
 
 /**
  * Calculate grayscale value
  */
-public interface IGetGray {
+public interface IGrayscaleAlgorithm {
     /**
      * Calculate grayscale value of specified RGB
      *

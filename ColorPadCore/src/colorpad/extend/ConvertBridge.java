@@ -1,5 +1,6 @@
-package colorpad.core;
+package colorpad.extend;
 
+import colorpad.core.ModelsManager;
 import colorpad.core.model.*;
 
 /**
@@ -26,11 +27,11 @@ public abstract class ConvertBridge {
     }
 
     public int getGray() {
-        return ConversionManager.getGrayscaleAlgorithm().calc(getRgb());
+        return ModelsManager.getGrayscaleAlgorithm().calc(getRgb());
     }
 
     protected void SetRgbFrom(Object source) {
-        rgb = ConversionManager.convert(source, Rgb.class);
+        rgb = ModelsManager.convert(source, Rgb.class);
     }
 
     // Getter & Setter

@@ -1,8 +1,8 @@
 package windows.component;
 
-import colorpad.core.ConvertBridge;
-import colorpad.core.NormalConvertBridge;
 import colorpad.core.model.Rgb;
+import colorpad.extend.ConvertBridge;
+import colorpad.extend.NormalConvertBridge;
 import toolkit.Common;
 
 import javax.swing.*;

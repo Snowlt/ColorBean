@@ -1,12 +1,12 @@
 package main;
 
-import colorpad.core.ConversionManager;
-import colorpad.core.ConvertBridge;
-import colorpad.core.NormalConvertBridge;
+import colorpad.core.ModelsManager;
 import colorpad.core.formula.ColorFormula;
 import colorpad.core.formula.FormulaType;
 import colorpad.core.model.*;
 import colorpad.extend.ColorType;
+import colorpad.extend.ConvertBridge;
+import colorpad.extend.NormalConvertBridge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,7 +166,7 @@ public class CommandLine {
             System.out.printf("Scheme %s (%d point): \n", type.name(), schemes.length);
             for (int i = 0; i < schemes.length; i++) {
                 System.out.printf("    Color %d: RGB - %s, HSB - %s\n", i + 1,
-                        ConversionManager.convert(schemes[i], Rgb.class).toString(COLOR_STRING_SEPARATOR),
+                        ModelsManager.convert(schemes[i], Rgb.class).toString(COLOR_STRING_SEPARATOR),
                         schemes[i].toString(COLOR_STRING_SEPARATOR));
             }
         }

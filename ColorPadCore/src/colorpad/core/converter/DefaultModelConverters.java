@@ -1,20 +1,19 @@
-package colorpad.core.algorithm;
+package colorpad.core.converter;
 
 import colorpad.core.Basic;
-import colorpad.core.algorithm.interfaces.IConvertFromTo;
 import colorpad.core.model.*;
 
-import static colorpad.core.ConversionManager.register;
+import static colorpad.core.ModelsManager.register;
 
 /**
- * Default color model conversion algorithm
+ * Default color model converter with conversion algorithm
  */
-public final class DefaultAlgorithm {
+public final class DefaultModelConverters {
 
-    private DefaultAlgorithm() {
+    private DefaultModelConverters() {
     }
 
-    public static void registerDefaultAlgorithm() {
+    public static void registerToManager() {
         // Register default converter
         register(Rgb.class, Hsb.class, RGB_TO_HSB);
         register(Hsb.class, Rgb.class, HSB_TO_RGB);

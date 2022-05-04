@@ -1,8 +1,8 @@
 package windows.component;
 
-import colorpad.core.ConvertBridge;
-import colorpad.core.NormalConvertBridge;
 import colorpad.core.model.Hsb;
+import colorpad.extend.ConvertBridge;
+import colorpad.extend.NormalConvertBridge;
 import toolkit.ColorTool;
 import toolkit.Common;
 

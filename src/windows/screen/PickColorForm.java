@@ -1,7 +1,7 @@
 package windows.screen;
 
-import colorpad.core.ConvertBridge;
 import colorpad.core.model.Hsb;
+import colorpad.extend.ConvertBridge;
 import toolkit.ColorTool;
 import toolkit.Common;
 import windows.component.ChangeColor;

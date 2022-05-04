@@ -1,6 +1,6 @@
 package colorpad.core.model;
 
-import colorpad.core.ConversionManager;
+import colorpad.core.ModelsManager;
 
 /**
  * Interfaces Of Color Models
@@ -24,9 +24,9 @@ public interface IColorModel {
      * @param targetClass Class of target model 目标颜色模型的Class
      * @return Target model 目标颜色模型
      * @throws IllegalArgumentException No converter found 找不到转换器
-     * @see ConversionManager#convert(Object, Class)
+     * @see ModelsManager#convert(Object, Class)
      */
     default <T> T convertTo(Class<T> targetClass) {
-        return ConversionManager.convert(this, targetClass);
+        return ModelsManager.convert(this, targetClass);
     }
 }

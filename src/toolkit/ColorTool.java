@@ -1,10 +1,10 @@
 package toolkit;
 
-import colorpad.core.ConversionManager;
-import colorpad.core.ConvertBridge;
-import colorpad.core.NormalConvertBridge;
+import colorpad.core.ModelsManager;
 import colorpad.core.model.Hsb;
 import colorpad.core.model.Rgb;
+import colorpad.extend.ConvertBridge;
+import colorpad.extend.NormalConvertBridge;
 
 import java.awt.*;
 
@@ -20,11 +20,11 @@ public class ColorTool {
     }
 
     public static Color toColor(Hsb hsb) {
-        return toColor(ConversionManager.convert(hsb, Rgb.class));
+        return toColor(ModelsManager.convert(hsb, Rgb.class));
     }
 
     public static Color hsbToColor(double h, double s, double b) {
-        return toColor(ConversionManager.convert(new Hsb(h, s, b), Rgb.class));
+        return toColor(ModelsManager.convert(new Hsb(h, s, b), Rgb.class));
     }
 
     public static ConvertBridge toBridge(Color color) {
