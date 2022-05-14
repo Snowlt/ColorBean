@@ -68,12 +68,22 @@ public class Rgb implements IColorModel {
         this.setB(b);
     }
 
+    Rgb(int value) {
+        int r, g, b;
+        r = (value >>> 16) & 255;
+        g = (value >>> 8) & 255;
+        b = value & 255;
+        this.setR(r);
+        this.setG(g);
+        this.setB(b);
+    }
+
     public boolean compareWith(int r, int g, int b) {
         return r() == r && g() == g && b() == b;
     }
 
     public String toHex() {
-        return String.format("%02X%02X%02X", r(), g(), b());
+        return Integer.toHexString(toInteger()).toUpperCase();
     }
 
     @Override
@@ -96,6 +106,15 @@ public class Rgb implements IColorModel {
 
     @Override
     public int hashCode() {
+        return toInteger();
+    }
+
+    /**
+     * Get the integer value of RGB, equals to decimal value of hex()
+     *
+     * @return Integer value
+     */
+    int toInteger() {
         return r() << 16 | g() << 8 | b();
     }
 
@@ -138,7 +157,7 @@ public class Rgb implements IColorModel {
         // 检查格式
         if (color.length() != 6)
             return null;
-        return parseHexToRgb(color);
+        return new Rgb(Basic.parseHex(color));
     }
 
     /**
@@ -166,11 +185,8 @@ public class Rgb implements IColorModel {
                 builder.append(c).append(c);
             }
             color = builder.toString();
-        } else {
-            // 小于6位长度的Hex
-            color = Basic.padLeft(color, 6, '0');
         }
-        return parseHexToRgb(color);
+        return new Rgb(Basic.parseHex(color));
     }
 
     /**
@@ -187,14 +203,6 @@ public class Rgb implements IColorModel {
         if (g < 0 || g > 255)
             return null;
         return new Rgb(g, g, g);
-    }
-
-    private static Rgb parseHexToRgb(String color) {
-        int r, g, b;
-        r = Basic.parseHex(color.substring(0, 2));
-        g = Basic.parseHex(color.substring(2, 4));
-        b = Basic.parseHex(color.substring(4, 6));
-        return new Rgb(r, g, b);
     }
 
 }
