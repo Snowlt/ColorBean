@@ -12,7 +12,10 @@ import java.text.MessageFormat;
  */
 public final class Cmyk implements IColorModel {
 
-    private final int c, m, y, k;
+    private final int c;
+    private final int m;
+    private final int y;
+    private final int k;
 
     /**
      * Cyan (0 - 100)
@@ -63,16 +66,6 @@ public final class Cmyk implements IColorModel {
     }
 
     @Override
-    public String toString(String separator) {
-        return MessageFormat.format("{1}{0}{2}{0}{3}{0}{4}", separator, c(), m(), y(), k());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("CMYK: ({0},{1},{2},{3})", c(), m(), y(), k());
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Cmyk)) return false;
@@ -83,6 +76,16 @@ public final class Cmyk implements IColorModel {
     @Override
     public int hashCode() {
         return c() << 24 | m() << 16 | y() << 8 | k();
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("CMYK: ({0},{1},{2},{3})", c(), m(), y(), k());
+    }
+
+    @Override
+    public String toString(String separator) {
+        return MessageFormat.format("{1}{0}{2}{0}{3}{0}{4}", separator, c(), m(), y(), k());
     }
 
 

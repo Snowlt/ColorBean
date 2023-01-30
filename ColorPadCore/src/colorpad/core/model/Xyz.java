@@ -12,7 +12,9 @@ import java.util.Objects;
  */
 public final class Xyz implements IColorModel {
 
-    private final double x, y, z;
+    private final double x;
+    private final double y;
+    private final double z;
 
     /**
      * Value of X
@@ -54,16 +56,6 @@ public final class Xyz implements IColorModel {
     }
 
     @Override
-    public String toString(String separator) {
-        return Basic.decimalFormat(separator, x(), y(), z());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("CIE-XYZ: ({0})", toString(","));
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Xyz)) return false;
@@ -74,6 +66,16 @@ public final class Xyz implements IColorModel {
     @Override
     public int hashCode() {
         return Objects.hash(x(), y(), z());
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("CIE-XYZ: ({0})", toString(","));
+    }
+
+    @Override
+    public String toString(String separator) {
+        return Basic.decimalFormat(separator, x(), y(), z());
     }
 
     /**

@@ -11,7 +11,9 @@ import java.text.MessageFormat;
  */
 public final class Lab implements IColorModel {
 
-    private final double l, a, b;
+    private final double l;
+    private final double a;
+    private final double b;
 
     /**
      * L (0 - 100)
@@ -53,16 +55,6 @@ public final class Lab implements IColorModel {
     }
 
     @Override
-    public String toString(String separator) {
-        return Basic.decimalFormat(separator, l(), a(), b());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("CIE-Lab: ({0},{1},{2})", l(), a(), b());
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Lab)) return false;
@@ -73,6 +65,16 @@ public final class Lab implements IColorModel {
     @Override
     public int hashCode() {
         return (int) (Math.round(l) << 16 | Math.round(a + 128) << 8 | Math.round(b + 128));
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("CIE-Lab: ({0},{1},{2})", l(), a(), b());
+    }
+
+    @Override
+    public String toString(String separator) {
+        return Basic.decimalFormat(separator, l(), a(), b());
     }
 
 

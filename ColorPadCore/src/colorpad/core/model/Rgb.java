@@ -11,7 +11,9 @@ import java.text.MessageFormat;
  */
 public final class Rgb implements IColorModel {
 
-    private final int r, g, b;
+    private final int r;
+    private final int g;
+    private final int b;
 
     /**
      * Pure white 纯白色
@@ -70,22 +72,25 @@ public final class Rgb implements IColorModel {
         return r() == r && g() == g && b() == b;
     }
 
+    /**
+     * Create upper case Hex / HTML string of RGB
+     * 生成大写 RGB 的 16进制 / HTML 格式字符串
+     *
+     * @return Hex of RGB
+     */
     public String toHex() {
         return toHex(true);
     }
 
+    /**
+     * Create Hex / HTML string of RGB
+     * 生成 RGB 的 16进制 / HTML 格式字符串
+     *
+     * @param upper Upper case / 大写
+     * @return RGB Hex
+     */
     public String toHex(boolean upper) {
         return upper ? Integer.toHexString(toInteger()).toUpperCase() : Integer.toHexString(toInteger());
-    }
-
-    @Override
-    public String toString(String separator) {
-        return MessageFormat.format("{1}{0}{2}{0}{3}", separator, r(), g(), b());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("RGB: ({0},{1},{2})", r(), g(), b());
     }
 
     @Override
@@ -99,6 +104,16 @@ public final class Rgb implements IColorModel {
     @Override
     public int hashCode() {
         return toInteger();
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("RGB: ({0},{1},{2})", r(), g(), b());
+    }
+
+    @Override
+    public String toString(String separator) {
+        return MessageFormat.format("{1}{0}{2}{0}{3}", separator, r(), g(), b());
     }
 
     /**

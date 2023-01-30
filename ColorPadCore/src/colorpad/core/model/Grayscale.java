@@ -23,6 +23,10 @@ public final class Grayscale implements IColorModel {
         this.value = value;
     }
 
+    public Rgb toRgb() {
+        return Rgb.from(value(), value(), value());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,10 +48,6 @@ public final class Grayscale implements IColorModel {
     @Override
     public String toString(String separator) {
         return String.valueOf(value);
-    }
-
-    public Rgb toRgb() {
-        return Rgb.from(value(), value(), value());
     }
 
     /**

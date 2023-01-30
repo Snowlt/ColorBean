@@ -12,7 +12,9 @@ import java.util.Objects;
  */
 public final class Hsb implements IColorModel {
 
-    private final double h, s, b;
+    private final double h;
+    private final double s;
+    private final double b;
 
     /**
      * Hue (0 - 360)
@@ -54,16 +56,6 @@ public final class Hsb implements IColorModel {
     }
 
     @Override
-    public String toString(String separator) {
-        return Basic.decimalFormat(separator, h(), s(), b());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("HSB: ({0})", toString(","));
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hsb)) return false;
@@ -74,6 +66,16 @@ public final class Hsb implements IColorModel {
     @Override
     public int hashCode() {
         return Objects.hash(h(), s(), b());
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("HSB: ({0})", toString(","));
+    }
+
+    @Override
+    public String toString(String separator) {
+        return Basic.decimalFormat(separator, h(), s(), b());
     }
 
     /**

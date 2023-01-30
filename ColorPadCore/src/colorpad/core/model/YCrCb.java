@@ -11,7 +11,9 @@ import java.text.MessageFormat;
  */
 public final class YCrCb implements IColorModel {
 
-    private final int y, cr, cb;
+    private final int y;
+    private final int cr;
+    private final int cb;
 
     /**
      * Y (0 - 255)
@@ -53,16 +55,6 @@ public final class YCrCb implements IColorModel {
     }
 
     @Override
-    public String toString(String separator) {
-        return MessageFormat.format("{1}{0}{2}{0}{3}", separator, y(), cr(), cb());
-    }
-
-    @Override
-    public String toString() {
-        return MessageFormat.format("YCrCb: ({0},{1},{2})", y(), cr(), cb());
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof YCrCb)) return false;
@@ -73,6 +65,16 @@ public final class YCrCb implements IColorModel {
     @Override
     public int hashCode() {
         return y() << 16 | cr() << 8 | cb();
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("YCrCb: ({0},{1},{2})", y(), cr(), cb());
+    }
+
+    @Override
+    public String toString(String separator) {
+        return MessageFormat.format("{1}{0}{2}{0}{3}", separator, y(), cr(), cb());
     }
 
     /**
