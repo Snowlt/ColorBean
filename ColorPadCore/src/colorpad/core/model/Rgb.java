@@ -90,7 +90,7 @@ public final class Rgb implements IColorModel {
      * @return RGB Hex
      */
     public String toHex(boolean upper) {
-        return upper ? Integer.toHexString(toInteger()).toUpperCase() : Integer.toHexString(toInteger());
+        return Basic.toLengthSixHex(toInteger(), upper);
     }
 
     @Override

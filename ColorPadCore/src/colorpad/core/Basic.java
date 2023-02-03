@@ -99,6 +99,29 @@ public class Basic {
         return DECIMAL_TWO_POINT_FORMATTER.format(new Object[]{separator, a, b, c}, new StringBuffer(), null).toString();
     }
 
+    static final char[] HEX_UPPER_CHARS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    static final char[] HEX_LOWER_CHARS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    /**
+     * Convert number to hexadecimal string of length 6 (leading with zero if length is less than 6)
+     *
+     * <p>The unsigned integer value is the argument plus 2<sup>24</sup> if the argument is negative</p>
+     * <p>This method is almost always faster than using Integer.toHexString and string concat</p>
+     *
+     * @param n     number
+     * @param upper if true, return uppercase string
+     * @return hex string
+     */
+    public static String toLengthSixHex(int n, boolean upper) {
+        char[] chars = upper ? HEX_UPPER_CHARS : HEX_LOWER_CHARS;
+        char[] t = new char[6];
+        for (int i = t.length - 1; i >= 0; i--) {
+            t[i] = chars[n & ((1 << 4) - 1)];
+            n >>>= 4;
+        }
+        return new String(t);
+    }
+
     public static boolean isEmpty(String s) {
         return s == null || s.isEmpty();
     }
